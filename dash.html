@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Expense Tracker</title>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzzBtOHaelMiwlhvpfwVc9_muM0cJXLuU",
+            authDomain: "expdev-cf3f9.firebaseapp.com",
+            projectId: "expdev-cf3f9",
+            storageBucket: "expdev-cf3f9.firebasestorage.app",
+            messagingSenderId: "825415636018",
+            appId: "1:825415636018:web:89efca58a7c64853a3182b"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Signup Function
+        window.signup = async function () {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const name = document.getElementById("name").value;
+
+            if (!name || !email || !password || !confirmPassword) {
+                alert("All fields are required.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                alert("Signup Successful! Redirecting...");
+                window.location.href = "https://ocular.reinisch.io/";
+            } catch (error) {
+                alert(error.message);
+            }
+        };
+
+        // Login Function
+        window.login = async function () {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Login Successful! Redirecting...");
+                window.location.href = "https://ocular.reinisch.io/";
+            } catch (error) {
+                alert(error.message);
+            }
+        };
+
+        // Toggle Between Login and Signup
+        window.toggleForm = function () {
+            const formContainer = document.getElementById("formContainer");
+            const title = document.getElementById("formTitle");
+            const loginBtn = document.getElementById("loginBtn");
+            const signupBtn = document.getElementById("signupBtn");
+
+            formContainer.classList.toggle("signup-mode");
+
+            if (formContainer.classList.contains("signup-mode")) {
+                title.innerText = "Sign Up";
+                loginBtn.style.display = "none";
+                signupBtn.style.display = "block";
+                document.getElementById("name").style.display = "block";
+                document.getElementById("confirmPasswordContainer").style.display = "block";
+            } else {
+                title.innerText = "Login";
+                loginBtn.style.display = "block";
+                signupBtn.style.display = "none";
+                document.getElementById("name").style.display = "none";
+                document.getElementById("confirmPasswordContainer").style.display = "none";
+            }
+        };
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Video Background */
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(50%);
+        }
+
+        /* Logo Styling */
+        .logo {
+            max-width: 140px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Authentication Box */
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 26px;
+        }
+
+        input {
+            margin-bottom: 15px;
+            padding: 12px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 6px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: 0.3s;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus {
+            border-color: white;
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 12px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #f3f4f6;
+        }
+
+        .link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .toggle-btn {
+            cursor: pointer;
+            color: yellow;
+            font-weight: 600;
+        }
+
+        .toggle-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Video Background -->
+    <video autoplay muted loop class="video-bg">
+        <source src="31577-387675234_small.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Logo -->
+    <img src="icon-512x512.png" alt="ocular Logo" class="logo">
+
+    <!-- Authentication Form -->
+    <div class="container" id="formContainer">
+        <h2 id="formTitle">Login</h2>
+        <div class="form-container">
+            <div class="form">
+                <input type="text" id="name" placeholder="Name" required style="display: none;">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div id="confirmPasswordContainer" style="display: none;">
+                    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+                <button id="loginBtn" onclick="login()">Login</button>
+                <button id="signupBtn" onclick="signup()" style="display: none;">Sign Up</button>
+                <p class="link">Don't have an account? <span class="toggle-btn" onclick="toggleForm()">Sign up</span></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
